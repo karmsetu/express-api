@@ -2,6 +2,8 @@ import asyncHandeler from 'express-async-handler';
 import User from '../models/user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { Payload } from '../types/JWT';
+import { MiddlewareRequest } from '../types/express';
 
 /**
  * @desc REGISTER a user
@@ -73,17 +75,16 @@ export const loginUser = asyncHandeler(async (req, res) => {
             console.error('.ENV_ERROR: ACCESS_TOKEN_SECRET is not defined ');
             process.exit(1);
         }
-        const accessToken = jwt.sign(
-            {
-                user: {
-                    username: user.username,
-                    email: user.email,
-                    id: user.id,
-                },
+        const Payload: Payload = {
+            user: {
+                username: user.username,
+                email: user.email,
+                id: user.id,
             },
-            ACCESS_TOKEN_SECRET,
-            { expiresIn: '3m' }
-        );
+        };
+        const accessToken = jwt.sign(Payload, ACCESS_TOKEN_SECRET, {
+            expiresIn: '3m',
+        });
         res.status(200).json({ accessToken });
     } else {
         res.status(401);
@@ -98,6 +99,11 @@ export const loginUser = asyncHandeler(async (req, res) => {
  * @access private
  */
 
-export const currentUser = asyncHandeler(async (req, res) => {
-    res.json({ message: 'register the user' });
-});
+export const currentUser = asyncHandeler(
+    async (req: MiddlewareRequest, res) => {
+        if (!req.user) {
+            console.log(`problem`);
+        }
+        res.json(req.user);
+    }
+);
