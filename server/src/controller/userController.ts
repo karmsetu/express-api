@@ -83,7 +83,7 @@ export const loginUser = asyncHandeler(async (req, res) => {
             },
         };
         const accessToken = jwt.sign(Payload, ACCESS_TOKEN_SECRET, {
-            expiresIn: '3m',
+            expiresIn: '30m',
         });
         res.status(200).json({ accessToken });
     } else {

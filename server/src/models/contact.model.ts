@@ -1,10 +1,11 @@
-import { Schema, model, Document } from 'mongoose';
+import mongoose, { Schema, model, Document } from 'mongoose';
 
 // Define an interface to represent a contact document in MongoDB
 interface IContact extends Document {
     name: string;
     email: string;
     phone: string;
+    user_id: mongoose.Schema.Types.ObjectId;
 }
 
 // Define the schema for a contact
@@ -36,6 +37,11 @@ const contactSchema = new Schema<IContact>(
             //     message: (props: { value: string }) =>
             //         `${props.value} is not a valid phone number!`,
             // },
+        },
+        user_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'User',
         },
     },
 

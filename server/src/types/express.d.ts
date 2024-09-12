@@ -5,7 +5,7 @@ import { Payload } from './JWT';
 declare global {
     namespace Express {
         interface Request {
-            user?: string; // or specify the type, e.g., `user?: User`
+            user?: any; // or specify the type, e.g., `user?: User`
         }
     }
 }
