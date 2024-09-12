@@ -2,6 +2,9 @@ import express from 'express';
 import { PORT } from './constants';
 import contactRouter from './routes/contactRoute';
 import { errorHandler } from './middleware/errorHandler';
+import { connectDB } from './config/dbConnection';
+
+connectDB();
 
 const app = express();
 
